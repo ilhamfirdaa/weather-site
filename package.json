@@ -47,12 +47,14 @@
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
   },
+  "lint-staged": {
+    "src/**/*.js": [
+      "eslint --fix", "git add"
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "lint-staged": {
-    "*.js": "eslint --fix"
   }
 }
