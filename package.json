@@ -1,7 +1,7 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "using-mui-jest-redux",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "description": "try to learn gatsby w/ some stack env",
   "version": "0.1.0",
   "author": "Moilfire",
   "dependencies": {
@@ -22,10 +22,13 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "husky": "^4.2.1",
-    "lint-staged": "^10.0.7",
-    "prettier": "^1.19.1"
+    "lint-staged": "^10.0.7"
   },
   "keywords": [
     "gatsby"
@@ -49,7 +52,8 @@
   },
   "lint-staged": {
     "src/**/*.js": [
-      "eslint --fix", "git add"
+      "eslint . --fix",
+      "git add"
     ]
   },
   "husky": {
