@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jest": true
     },
     "extends": [
         "plugin:react/recommended",
@@ -24,6 +25,9 @@
     "rules": {
         "semi": ["error", "never"],
         "linebreak-style": ["error", "windows"],
+        "no-console": "off",
+        "no-tabs": ["error", { "allowIndentationTabs": true }],
+        "react/no-array-index-key": "off",
         "react/jsx-fragments": "off",
         "react/prop-types": "off",
         "react/require-default-props": "off",

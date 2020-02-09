@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `Gatsby using MUI jest redux`,
     description: `try to learn gatsby w/ some stack env.`,
-    author: `@gatsbyjs`,
+    author: `moilfire`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

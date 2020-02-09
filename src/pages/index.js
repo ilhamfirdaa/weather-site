@@ -1,7 +1,7 @@
 import React from 'react'
-// import { Link } from "gatsby"
+import { Link } from 'gatsby'
 import { connect } from 'react-redux'
-import { Button, Link, Typography } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 
 import Layout from '../components/layout'
 import Image from '../components/image'
@@ -12,6 +12,11 @@ import { toggleDarkMode } from '../state/app'
 const IndexPage = ({ isDarkMode, dispatch }) => (
   <Layout>
     <SEO title="Home" />
+    <Link to="/forecast/">
+      <Typography>
+        Weather!
+      </Typography>
+    </Link>
     <h1 style={isDarkMode ? { color: '#663399' } : null}>Hi people</h1>
     <Typography variant="h3" style={isDarkMode ? { color: 'navy' } : null}>Hi buddies</Typography>
     <Typography>Welcome to your new Gatsby site.</Typography>

@@ -13,7 +13,7 @@ const createStore = () => reduxCreateStore(rootReducer)
 
 export default function TopLayout(props) {
   const { children } = props
-  console.log(theme)
+
   return (
     <>
       <Helmet>
