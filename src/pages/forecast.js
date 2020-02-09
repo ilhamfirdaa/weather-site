@@ -4,7 +4,7 @@ import { graphql, useStaticQuery } from 'gatsby'
 import { Container, Typography } from '@material-ui/core'
 
 import { makeStyles } from '@material-ui/core/styles'
-import SEO from '../components/seo'
+// import SEO from '../components/seo'
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -20,8 +20,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ForecastPage = () => {
+export const PureForecast = ({ data }) => {
   const classes = useStyles()
+
+  return (
+    <>
+      {/* <SEO title="Forecast" /> */}
+      <main className={classes.mainContainer}>
+        <div className={classes.overlay}>
+          <Container maxWidth="md">
+            <Typography variant="h2">
+              Weather site!
+            </Typography>
+            <Typography variant="h3">
+              {data.cityName}
+            </Typography>
+            {data.listForecasts.map((value, index) => (
+              <li
+                key={index}
+                style={{
+                  textAlign: 'center',
+                  listStyle: 'none',
+                  display: 'inline',
+                }}
+              >
+                <p>{value.weather.description}</p>
+              </li>
+            ))}
+          </Container>
+        </div>
+      </main>
+    </>
+  )
+}
+
+export const ForecastPage = (props) => {
   const { forecast } = useStaticQuery(graphql`
     {
       forecast {
@@ -45,36 +78,7 @@ const ForecastPage = () => {
     }
   `)
 
-  return (
-    <>
-      <SEO title="Forecast" />
-      <main className={classes.mainContainer}>
-        <div className={classes.overlay}>
-          <Container maxWidth="md">
-            <Typography variant="h3">
-              Weather site!
-            </Typography>
-            <Typography variant="h3">
-              {forecast.cityName}
-            </Typography>
-            {forecast.listForecasts.map((value, index) => (
-              <li
-                key={index}
-                style={{
-                  textAlign: 'center',
-                  listStyle: 'none',
-                  display: 'inline',
-                }}
-              >
-                <p>{value.weather.description}</p>
-              </li>
-            ))}
-          </Container>
-        </div>
-      </main>
-    </>
-  )
+  return <PureForecast {...props} data={forecast} />
 }
-
 
 export default ForecastPage

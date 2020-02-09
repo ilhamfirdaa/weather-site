@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot testing matching? 1`] = `
+<main
+  className="makeStyles-mainContainer-1"
+>
+  <div
+    className="makeStyles-overlay-2"
+  >
+    <div
+      className="MuiContainer-root MuiContainer-maxWidthMd"
+    >
+      <h2
+        className="MuiTypography-root MuiTypography-h2"
+      >
+        Weather site!
+      </h2>
+      <h3
+        className="MuiTypography-root MuiTypography-h3"
+      >
+        Jakarta
+      </h3>
+      <li
+        style={
+          Object {
+            "display": "inline",
+            "listStyle": "none",
+            "textAlign": "center",
+          }
+        }
+      >
+        <p>
+          Overcast clouds
+        </p>
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline",
+            "listStyle": "none",
+            "textAlign": "center",
+          }
+        }
+      >
+        <p>
+          Light rain
+        </p>
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline",
+            "listStyle": "none",
+            "textAlign": "center",
+          }
+        }
+      >
+        <p>
+          Broken clouds
+        </p>
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline",
+            "listStyle": "none",
+            "textAlign": "center",
+          }
+        }
+      >
+        <p>
+          Heavy rain
+        </p>
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline",
+            "listStyle": "none",
+            "textAlign": "center",
+          }
+        }
+      >
+        <p>
+          Light rain
+        </p>
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline",
+            "listStyle": "none",
+            "textAlign": "center",
+          }
+        }
+      >
+        <p>
+          Broken clouds
+        </p>
+      </li>
+      <li
+        style={
+          Object {
+            "display": "inline",
+            "listStyle": "none",
+            "textAlign": "center",
+          }
+        }
+      >
+        <p>
+          Heavy rain
+        </p>
+      </li>
+    </div>
+  </div>
+</main>
+`;
