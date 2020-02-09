@@ -22,5 +22,11 @@
         "react"
     ],
     "rules": {
+        "semi": ["error", "never"],
+        "linebreak-style": ["error", "windows"],
+        "react/jsx-fragments": "off",
+        "react/prop-types": "off",
+        "react/require-default-props": "off",
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
     }
 }

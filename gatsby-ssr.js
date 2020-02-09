@@ -1,7 +1,6 @@
-/**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/ssr-apis/
- */
+/* eslint-disable react/prop-types */
+/* eslint-disable import/prefer-default-export */
+import React from 'react'
+import TopLayout from './src/layout/TopLayout'
 
-// You can delete this file if you're not using it
+export const wrapRootElement = ({ element }) => <TopLayout>{element}</TopLayout>

@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
+    title: `Gatsby using MUI jest redux`,
+    description: `try to learn gatsby w/ some stack env.`,
     author: `@gatsbyjs`,
   },
   plugins: [
@@ -25,6 +25,26 @@ module.exports = {
         theme_color: `#663399`,
         display: `minimal-ui`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+      },
+    },
+    {
+      resolve: `gatsby-plugin-material-ui`,
+      options: {
+        disableAutoprefixing: false,
+        disableMinification: false,
+        // stylesProvider: {
+        //   injectFirst: true,
+        // },
+        // webFontsConfig: {
+        //   fonts: {
+        //     google: [
+        //       {
+        //         family: `Kaushan`,
+        //         variants: [`300`, `500`, `700`],
+        //       },
+        //     ],
+        //   },
+        // },
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality

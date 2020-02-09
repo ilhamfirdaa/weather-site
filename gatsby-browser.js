@@ -1,7 +1,7 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/browser-apis/
- */
+/* eslint-disable react/prop-types */
+/* eslint-disable import/prefer-default-export */
+import React from 'react'
+import TopLayout from './src/layout/TopLayout'
+import './src/styles/global.css'
 
-// You can delete this file if you're not using it
+export const wrapRootElement = ({ element }) => <TopLayout>{element}</TopLayout>
