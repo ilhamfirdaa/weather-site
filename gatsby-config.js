@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby using MUI jest redux`,
+    title: `Weather`,
     description: `try to learn gatsby w/ some stack env.`,
     author: `moilfire`,
   },
