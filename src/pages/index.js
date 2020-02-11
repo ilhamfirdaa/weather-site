@@ -5,23 +5,30 @@ import moment from 'moment'
 import {
   Container, Typography, Grid, Box,
 } from '@material-ui/core'
-
 import { makeStyles } from '@material-ui/core/styles'
 import PlaceOutlinedIcon from '@material-ui/icons/PlaceOutlined'
 
 import SEO from '../components/seo'
+import { weatherMap } from '../dataMap'
+
+import '../styles/weatherWidget.css'
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
-    minHeight: '100vh',
-    // backgroundImage: 'url(https://source.unsplash.com/1920x1080/?nature)',
+    height: '100vh',
   },
   overlay: {
     width: '100%',
-    height: '100vh',
     backgroundColor: 'rgba(0,0,0,0.7)',
     zIndex: 2,
     padding: theme.spacing(0),
+    backgroundAttachment: 'fixed',
+    [theme.breakpoints.up('xl')]: {
+      height: '100vh',
+    },
+    [theme.breakpoints.up('lg')]: {
+      height: '100vh',
+    },
   },
   content: {
     padding: theme.spacing(8, 0),
@@ -29,19 +36,20 @@ const useStyles = makeStyles((theme) => ({
   whiteText: {
     color: 'white',
   },
-  forecastImg: {
-    // width: '100px',
-    // height: '100px',
-  },
 }))
 
-export const PureForecast = ({ data, imgData }) => {
+const getWidget = (code) => {
+  const widget = weatherMap.get(code) || weatherMap.get('unknown')
+  return widget
+}
+
+export const PureForecast = ({ data }) => {
   const classes = useStyles()
 
   return (
     <>
       <SEO title="Jakarta" />
-      <main className={`${classes.mainContainer} ${classes.whiteText}`} style={{ backgroundImage: `url(${imgData.imageFull})` }}>
+      <main className={`${classes.mainContainer} ${classes.whiteText}`}>
         <div className={`${classes.overlay} ${classes.whiteText}`}>
           <Container maxWidth="md" className={`${classes.content} ${classes.whiteText}`}>
             <Box
@@ -56,49 +64,48 @@ export const PureForecast = ({ data, imgData }) => {
             </Box>
             <Grid
               container
-              spacing={4}
+              // spacing={1}
               justify="center"
               alignItems="center"
             >
-              <Grid item xs={12} sm={6} md={6} style={{ textAlign: 'center' }}>
-                <img src={`/weathers/${data.listForecasts[0].weather.icon}.png`} alt={`${data.listForecasts[0].weather.code}`} />
-                <Typography variant="subtitle2">
+              <Grid item xs={6} sm={3} md={3} style={{ textAlign: 'center' }}>
+                {getWidget(data.listForecasts[0].weather.code)}
+                <Typography variant="body2">
                   {data.listForecasts[0].weather.description}
+                </Typography>
+              </Grid>
+              <Grid item xs={6} sm={3} md={3} style={{ textAlign: 'center' }}>
+                <Typography variant="h4">
+                  {`${data.listForecasts[0].temp}`}
+                  &#8451;
                 </Typography>
               </Grid>
               <Grid item xs={6} sm={3} md={3} style={{ textAlign: 'right' }}>
                 <Typography variant="subtitle2">
-                  Date :
-                </Typography>
-                <Typography variant="subtitle1">
-                  Temperature :
+                  Date
                 </Typography>
                 <Typography variant="subtitle2">
-                  Wind Speed :
+                  Wind Speed
                 </Typography>
                 <Typography variant="subtitle2">
-                  Precipitation :
+                  Precipitation
                 </Typography>
                 <Typography variant="subtitle2">
-                  Sunrise | Sunset :
+                  Sunrise | Sunset
                 </Typography>
               </Grid>
               <Grid item xs={6} sm={3} md={3}>
                 <Typography variant="subtitle2">
-                  {moment(data.listForecasts[0].datetime).format('dddd, D MMMM YYYY')}
-                </Typography>
-                <Typography variant="subtitle1">
-                  {`${data.listForecasts[0].temp}`}
-                  &#8451;
+                  {` : ${moment(data.listForecasts[0].datetime).format('ddd, D MMM YYYY')}`}
                 </Typography>
                 <Typography variant="subtitle2">
-                  {`${(data.listForecasts[0].wind_spd).toFixed(2)} mph`}
+                  {` : ${(data.listForecasts[0].wind_spd).toFixed(2)} mph`}
                 </Typography>
                 <Typography variant="subtitle2">
-                  {`${Math.round(data.listForecasts[0].precip)}%`}
+                  {` : ${Math.round(data.listForecasts[0].precip)}%`}
                 </Typography>
                 <Typography variant="subtitle2">
-                  {`${moment.unix(data.listForecasts[0].sunrise_ts).format('hh:mm')} AM | ${moment.unix(data.listForecasts[0].sunset_ts).format('hh:mm')} PM`}
+                  {` : ${moment.unix(data.listForecasts[0].sunrise_ts).format('hh:mm')} AM | ${moment.unix(data.listForecasts[0].sunset_ts).format('hh:mm')} PM`}
                 </Typography>
               </Grid>
             </Grid>
@@ -125,9 +132,9 @@ export const PureForecast = ({ data, imgData }) => {
                 {data.listForecasts.map((value, index) => {
                   const day = moment(value.datetime).format('ddd')
                   return (
-                    <Grid item key={index}>
+                    <Grid item key={index} style={{ margin: '0 40px' }}>
                       <Typography variant="body1">{day}</Typography>
-                      <img src={`/weathers/${value.weather.icon}.png`} alt={`${value.weather.code}`} className={classes.forecastImg} />
+                      {getWidget(value.weather.code)}
                       <Typography variant="body1">
                         {`${value.temp}`}
                         &#8451;
@@ -146,7 +153,7 @@ export const PureForecast = ({ data, imgData }) => {
 }
 
 export const ForecastPage = (props) => {
-  const { forecast, unsplash } = useStaticQuery(graphql`
+  const { forecast } = useStaticQuery(graphql`
     {
       forecast {
         cityName
@@ -167,13 +174,10 @@ export const ForecastPage = (props) => {
           sunset_ts
         }
       }
-      unsplash {
-        imageFull
-      }
     }
   `)
 
-  return <PureForecast {...props} data={forecast} imgData={unsplash} />
+  return <PureForecast {...props} data={forecast} />
 }
 
 export default ForecastPage

@@ -1,6 +1,31 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
 
+body {
+	background-image: url(https://source.unsplash.com/1920x1080/?nature,mountain,ocean);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+@media only screen and (max-width: 720px) {
+  body {
+		background-image: url(https://source.unsplash.com/720x1280/?nature,mountain,ocean);
+  }
+}
+
+@media only screen and (max-width: 540px) {
+  body {
+		background-image: url(https://source.unsplash.com/540x960/?nature,mountain,ocean);
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  body {
+		background-image: url(https://source.unsplash.com/360x640/?nature,mountain,ocean);
+  }
+}
+
 img {
 	margin-bottom: 0;
 }
+

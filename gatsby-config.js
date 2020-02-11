@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Weather`,
-    description: `try to learn gatsby w/ some stack env.`,
+    description: `try to learn gatsby w/ some others stack.`,
     author: `moilfire`,
   },
   plugins: [

@@ -2,15 +2,15 @@
 // import { mount } from 'enzyme'
 // // import renderer from 'react-test-renderer'
 
-// import { PureForecast } from '../pages/forecast'
+// import { PureForecast } from '../pages/index'
 // import data from '../data'
 
 // describe('Components testing', () => {
-//   it('shows "Weather site!"', () => {
-//     const tree = mount(<PureForecast data={data} />)
+//   // it('shows "Weather site!"', () => {
+//   //   const tree = mount(<PureForecast data={data} />)
 
-//     expect(tree.find('h4').text()).toEqual('Weather site!')
-//   })
+//   //   expect(tree.find('h4').text()).toEqual('Weather site!')
+//   // })
 
 //   it('contain image', () => {
 //     const tree = mount(<PureForecast data={data} />)
