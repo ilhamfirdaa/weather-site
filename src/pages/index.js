@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 // import { Link } from 'gatsby'
 import { graphql, useStaticQuery } from 'gatsby'
+import { connect } from 'react-redux'
 import moment from 'moment'
+import axios from 'axios'
+
 import {
   Container, Typography, Grid, Box,
 } from '@material-ui/core'
@@ -10,6 +13,7 @@ import PlaceOutlinedIcon from '@material-ui/icons/PlaceOutlined'
 
 import SEO from '../components/seo'
 import { weatherMap } from '../dataMap'
+import { toggleMounting } from '../state/app'
 
 import '../styles/weatherWidget.css'
 
@@ -43,111 +47,179 @@ const getWidget = (code) => {
   return widget
 }
 
-export const PureForecast = ({ data }) => {
+// export const PureForecast = ({ data, isMounting, dispatch }) => {
+export const PureForecast = ({ isMounting, dispatch }) => {
   const classes = useStyles()
+  const [weatherState, setWeatherState] = useState()
+  const [cityState, setCityState] = useState({ cityName: '', timeone: '' })
+
+  useEffect(() => {
+    getLocation()
+  }, [])
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(getCity)
+    } else {
+      console.log('Geolocation is not supported by this browser.')
+    }
+  }
+
+  const getCity = async (position) => {
+    const { latitude, longitude } = position.coords
+    const res = await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`)
+
+    getWeather(res.data.principalSubdivision)
+  }
+
+  const getWeather = async (city) => {
+    const res = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&days=5&key=2b0ee1414ceb4f9195c5a38d208c473f`)
+
+    setWeatherState(res.data.data)
+    setCityState({ cityName: res.data.city_name, timeone: res.data.timezone })
+    dispatch(toggleMounting(!isMounting))
+  }
 
   return (
     <>
-      <SEO title={data.cityName} />
-      <main className={`${classes.mainContainer} ${classes.whiteText}`}>
-        <div className={`${classes.overlay} ${classes.whiteText}`}>
-          <Container maxWidth="md" className={`${classes.content} ${classes.whiteText}`}>
-            <Box
-              display="flex"
-              alignItems="flex-center"
-              justifyContent="center"
-            >
-              <PlaceOutlinedIcon fontSize="large" />
-              <Typography variant="h5">
-                {data.cityName}
-              </Typography>
-            </Box>
-            <Grid
-              container
-              // spacing={1}
-              justify="center"
-              alignItems="center"
-            >
-              <Grid item xs={6} sm={3} md={3} style={{ textAlign: 'center' }}>
-                {getWidget(data.listForecasts[0].weather.code)}
-                <Typography variant="body2">
-                  {data.listForecasts[0].weather.description}
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sm={3} md={3} style={{ textAlign: 'center' }}>
-                <Typography variant="h4">
-                  {`${data.listForecasts[0].temp}`}
-                  &#8451;
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sm={3} md={3} style={{ textAlign: 'right' }}>
-                <Typography variant="subtitle2">
-                  Date
-                </Typography>
-                <Typography variant="subtitle2">
-                  Wind Speed
-                </Typography>
-                <Typography variant="subtitle2">
-                  Precipitation
-                </Typography>
-                <Typography variant="subtitle2">
-                  Sunrise | Sunset
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sm={3} md={3}>
-                <Typography variant="subtitle2">
-                  {` : ${moment(data.listForecasts[0].datetime).format('ddd, D MMM YYYY')}`}
-                </Typography>
-                <Typography variant="subtitle2">
-                  {` : ${(data.listForecasts[0].wind_spd).toFixed(2)} mph`}
-                </Typography>
-                <Typography variant="subtitle2">
-                  {` : ${Math.round(data.listForecasts[0].precip)}%`}
-                </Typography>
-                <Typography variant="subtitle2">
-                  {` : ${moment.unix(data.listForecasts[0].sunrise_ts).format('hh:mm')} AM | ${moment.unix(data.listForecasts[0].sunset_ts).format('hh:mm')} PM`}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Box
-              display="flex"
-              alignItems="flex-center"
-              justifyContent="center"
-              pt={4}
-              pb={2}
-            >
-              <Typography variant="h5">
-                Daily Forecast
-              </Typography>
-            </Box>
-            <Box
-              display="flex"
-              alignItems="flex-center"
-              justifyContent="center"
-              pt={2}
-              pr={1}
-              pl={1}
-            >
-              <Grid container spacing={2} align="center">
-                {data.listForecasts.map((value, index) => {
-                  const day = moment(value.datetime).format('ddd')
-                  return (
-                    <Grid item key={index} style={{ margin: '0 40px' }}>
-                      <Typography variant="body1">{day}</Typography>
-                      {getWidget(value.weather.code)}
-                      <Typography variant="body1">
-                        {`${value.temp}`}
-                        &#8451;
-                        {` | ${Math.round(value.precip)}%`}
-                      </Typography>
-                    </Grid>
-                  )
-                })}
-              </Grid>
-            </Box>
-          </Container>
+      {isMounting ? (
+        <>
+          {/* <SEO title={data.cityName} /> */}
+          <SEO title={cityState.cityName} />
+          <main className={`${classes.mainContainer} ${classes.whiteText}`}>
+            <div className={`${classes.overlay} ${classes.whiteText}`}>
+              <Container maxWidth="md" className={`${classes.content} ${classes.whiteText}`}>
+                <Box
+                  display="flex"
+                  alignItems="flex-center"
+                  justifyContent="center"
+                >
+                  <PlaceOutlinedIcon fontSize="large" />
+                  <Typography variant="h5">
+                    {/* {data.cityName} */}
+                    {cityState.cityName}
+                  </Typography>
+                </Box>
+                <Grid
+                  container
+									// spacing={1}
+                  justify="center"
+                  alignItems="center"
+                >
+                  <Grid item xs={6} sm={3} md={3} style={{ textAlign: 'center' }}>
+                    {/* {getWidget(data.listForecasts[0].weather.code)} */}
+                    {getWidget(weatherState[0].weather.code)}
+                    <Typography variant="body2">
+                      {/* {data.listForecasts[0].weather.description} */}
+                      {weatherState[0].weather.description}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6} sm={3} md={3} style={{ textAlign: 'center' }}>
+                    <Typography variant="h4">
+                      {/* {`${data.listForecasts[0].temp}`} */}
+                      {`${weatherState[0].temp}`}
+                      &#8451;
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6} sm={3} md={3} style={{ textAlign: 'right' }}>
+                    <Typography variant="subtitle2">
+                      Date
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      Wind Speed
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      Precipitation
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      Sunrise | Sunset
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6} sm={3} md={3}>
+                    <Typography variant="subtitle2">
+                      {/* {` : ${moment(data.listForecasts[0].datetime).format('ddd, D MMM YYYY')}`} */}
+                      {` : ${moment(weatherState[0].datetime).format('ddd, D MMM YYYY')}`}
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      {/* {` : ${(data.listForecasts[0].wind_spd).toFixed(2)} mph`} */}
+                      {` : ${(weatherState[0].wind_spd).toFixed(2)} mph`}
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      {/* {` : ${Math.round(data.listForecasts[0].precip)}%`} */}
+                      {` : ${Math.round(weatherState[0].precip)}%`}
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      {/* {` : ${moment.unix(data.listForecasts[0].sunrise_ts).format('hh:mm')} AM | ${moment.unix(data.listForecasts[0].sunset_ts).format('hh:mm')} PM`} */}
+                      {` : ${moment.unix(weatherState[0].sunrise_ts).format('hh:mm')} AM | ${moment.unix(weatherState[0].sunset_ts).format('hh:mm')} PM`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Box
+                  display="flex"
+                  alignItems="flex-center"
+                  justifyContent="center"
+                  pt={4}
+                  pb={2}
+                >
+                  <Typography variant="h5">
+                    Daily Forecast
+                  </Typography>
+                </Box>
+                <Box
+                  display="flex"
+                  alignItems="flex-center"
+                  justifyContent="center"
+                  pt={2}
+                  pr={1}
+                  pl={1}
+                >
+                  <Grid container spacing={2} align="center">
+                    {/* {data.listForecasts.map((value, index) => { */}
+                    {weatherState.map((value, index) => {
+                      const day = moment(value.datetime).format('ddd')
+                      return (
+                        <Grid item key={index} style={{ margin: '0 40px' }}>
+                          <Typography variant="body1">{day}</Typography>
+                          {getWidget(value.weather.code)}
+                          <Typography variant="body1">
+                            {`${value.temp}`}
+                            &#8451;
+                            {` | ${Math.round(value.precip)}%`}
+                          </Typography>
+                        </Grid>
+                      )
+                    })}
+                  </Grid>
+                </Box>
+              </Container>
+            </div>
+          </main>
+        </>
+      ) : (
+        <div className={classes.overlay}>
+          <div className="loader">
+            <span>
+              <span />
+              <span />
+              <span />
+              <span />
+            </span>
+            <div className="base">
+              <span />
+              <div className="face" />
+            </div>
+          </div>
+          <div className="longfazers">
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+          <Typography variant="subtitle2" className="loaderText">
+            Please allow location to get your current weather
+          </Typography>
         </div>
-      </main>
+      )}
     </>
   )
 }
@@ -180,4 +252,6 @@ export const ForecastPage = (props) => {
   return <PureForecast {...props} data={forecast} />
 }
 
-export default ForecastPage
+export default connect((state) => ({
+  isMounting: state.app.isMounting,
+}), null)(ForecastPage)
