@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `Weather`,
     description: `5 day forecast site`,
-    author: `moilfire`,
+    author: `ilhamfirdaa`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

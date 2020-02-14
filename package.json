@@ -1,9 +1,9 @@
 {
-  "name": "using-mui-jest-redux",
+  "name": "weather-site",
   "private": true,
-  "description": "try to learn gatsby w/ some stack env",
+  "description": "5 day forecast site",
   "version": "0.1.0",
-  "author": "moilfire",
+  "author": "ilhamfirdaa",
   "dependencies": {
     "@material-ui/core": "^4.9.2",
     "@material-ui/icons": "^4.9.1",
@@ -65,7 +65,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ilhamfirdaa/gatsby-mui-redux-jest"
+    "url": "https://github.com/ilhamfirdaa/weather-site"
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
