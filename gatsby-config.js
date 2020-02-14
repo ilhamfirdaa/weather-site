@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Weather`,
-    description: `5 day forecast site`,
+    description: `5 days forecast site`,
     author: `ilhamfirdaa`,
   },
   plugins: [
