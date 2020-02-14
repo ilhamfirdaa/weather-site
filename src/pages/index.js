@@ -15,6 +15,7 @@ import SEO from '../components/seo'
 import { weatherMap } from '../dataMap'
 import { toggleMounting } from '../state/app'
 
+import cities from '../cities.json'
 import '../styles/weatherWidget.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -67,17 +68,46 @@ export const PureForecast = ({ isMounting, dispatch }) => {
 
   const getCity = async (position) => {
     const { latitude, longitude } = position.coords
-    const res = await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`)
+    try {
+      // const res = await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`)
+      // getWeather(res.data.principalSubdivision)
 
-    getWeather(res.data.principalSubdivision)
+      const response = await axios.get(`https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?prox=${latitude}%2C${longitude}&mode=retrieveAddresses&maxresults=1&gen=9&apiKey=-SfNsiuCfM5iVGxf3vcJ0oMXNiGOGJapSUutV-lv44o`)
+      getWeather(response.data.Response.View[0].Result[0].Location.Address.City)
+      // getWeather('Rancho Palos Verdes')
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const getWeather = async (city) => {
-    const res = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&days=5&key=2b0ee1414ceb4f9195c5a38d208c473f`)
+    let geoCity = 'Malang'
+    let found = cities.find(
+      (data) => data.city_name === city,
+    )
 
-    setWeatherState(res.data.data)
-    setCityState({ cityName: res.data.city_name, timeone: res.data.timezone })
-    dispatch(toggleMounting(!isMounting))
+    if (found !== undefined) {
+      geoCity = found.city_name
+    } else {
+      const splited = city.split(' ')
+      splited.forEach((val) => {
+        found = cities.find(
+          (data) => data.city_name === val,
+        )
+        if (found !== undefined) {
+          geoCity = found.city_name
+        }
+      })
+    }
+
+    try {
+      const res = await axios.get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${geoCity}&days=5&key=2b0ee1414ceb4f9195c5a38d208c473f`)
+      setWeatherState(res.data.data)
+      setCityState({ cityName: res.data.city_name, timeone: res.data.timezone })
+      dispatch(toggleMounting(!isMounting))
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
