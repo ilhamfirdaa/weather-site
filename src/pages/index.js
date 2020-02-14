@@ -115,7 +115,7 @@ export const PureForecast = ({ isMounting, dispatch }) => {
       {isMounting ? (
         <>
           {/* <SEO title={data.cityName} /> */}
-          <SEO title="Coba" />
+          <SEO title={cityState.cityName} />
           <main className={`${classes.mainContainer} ${classes.whiteText}`}>
             <div className={`${classes.overlay} ${classes.whiteText}`}>
               <Container maxWidth="md" className={`${classes.content} ${classes.whiteText}`}>
